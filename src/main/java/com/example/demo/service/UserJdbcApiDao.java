@@ -31,7 +31,7 @@ public class UserJdbcApiDao {
 
             connection = dataSource.getConnection();  // 1 - DataSource
             statement = connection.prepareStatement("SELECT * FROM \"user\" WHERE id = ?");   // 2
-            statement.setInt(1, userId);
+            statement.setInt(1, userId);// 1: 첫번째 물음표에, userId: param인 userId를 세팅한다
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {// next() : 결과값 있냐
@@ -94,8 +94,6 @@ public class UserJdbcApiDao {
             if (connection != null) connection.close(); // 3
         }
     }
-
-
     public User save(String name, Integer age, String job, String specialty) throws SQLException {
         Connection connection = null;           // 1
         PreparedStatement statement = null;     // 2
@@ -114,7 +112,7 @@ public class UserJdbcApiDao {
             int executedNumberOfQuery = statement.executeUpdate();
             // (B) SELECT id - MySQL:last_insert_id()->id / PostgresQL:currval()->lastval/lastval()->lastval
             statement = connection.prepareStatement(    // (B)-2:Statement
-                "SELECT lastval()"
+                "SELECT lastval()" // 현재 세션은 현재 커넥션을 의미, idGeneraged, 세션 = 커넥션 단위
             );
             resultSet = statement.executeQuery();       // (B)-3:ResultSet
             Integer createdUserId = null;
@@ -150,4 +148,5 @@ public class UserJdbcApiDao {
             if (connection != null) connection.close(); // 3
         }
     }
+
 }
