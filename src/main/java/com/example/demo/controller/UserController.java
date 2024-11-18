@@ -51,7 +51,6 @@ public class UserController {
                 .body(user);                // 2. 결과 객체(User)
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDto> update(@PathVariable Integer id, @RequestBody @Valid UserCreateRequestDto request) {
         UserResponseDto user = userService.update(id, request.getName(), request.getAge(), request.getJob(), request.getSpecialty());
@@ -59,5 +58,14 @@ public class UserController {
 //              .status(HttpStatusCode.valueOf(201))
             .status(HttpStatus.ACCEPTED) // 1. HTTP Status Code
             .body(user);                // 2. 결과 객체(User)
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        userService.delete(id);
+        return ResponseEntity
+//              .status(HttpStatusCode.valueOf(201))
+            .status(HttpStatus.ACCEPTED) // 1. HTTP Status Code
+            .body(null);                // 2. 결과 객체(User)
     }
 }

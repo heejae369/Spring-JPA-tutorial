@@ -80,4 +80,9 @@ public class UserService {
         User user = userJdbcTemplateRepository.update(id, name, age, job, specialty);
         return UserResponseDto.from(user);
     }
+
+    //JDBC Template 적용한 delete, JDBC Template에서 처음 생성
+    public void delete(Integer id) {
+        userJdbcTemplateRepository.delete(id);
+    }
 }
