@@ -13,25 +13,9 @@ import java.time.ZoneId;
 import javax.sql.DataSource;
 @Slf4j
 @Repository
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class UserJdbcApiDao {
-    @Value("${spring.datasource.url}") //Value : application.property에 있는 환경변수(우리가 정해놓은 것들)로 접속
-    private String url;
-    @Value("${spring.datasource.username}")
-    private String username;
-    @Value("${spring.datasource.password}")
-    private String password;
-    @Value("${spring.datasource.driver-class-name}")
-    private String driver;
-    private DataSource dataSource() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(url);
-        config.setUsername(username);
-        config.setPassword(password);
-        config.setDriverClassName(driver);
-        HikariDataSource hikariDataSource = new HikariDataSource(config);
-        return hikariDataSource;
-    }
+    private final DataSource dataSource;
 
     public User findById(int userId) throws SQLException {
         Connection connection = null;   // 1, 접속
@@ -40,7 +24,7 @@ public class UserJdbcApiDao {
         // DriverManager :
         try {
 
-            connection = dataSource().getConnection();  // 1 - DataSource
+            connection = dataSource.getConnection();  // 1 - DataSource
 //            connection = DriverManager.getConnection(   // 1
 //                url, username, password
 //            );
