@@ -21,19 +21,16 @@ public class UserJdbcApiDao {
 
     public User findById(int userId) throws SQLException {
         Connection connection = null;   // 1, 접속
-        Statement statement = null;     // 2, 쿼리
+        PreparedStatement statement = null;     // 2, 쿼리
         ResultSet resultSet = null;     // 3, 쿼리 결과값
         // DriverManager :
         try {
 
             connection = dataSource.getConnection();  // 1 - DataSource
-//            connection = DriverManager.getConnection(   // 1
-//                url, username, password
-//            );
-            statement = connection.createStatement();   // 2
-            resultSet = statement.executeQuery(         // 3
-                "SELECT * FROM \"user\" WHERE id = " + userId
-            );
+            statement = connection.prepareStatement("SELECT * FROM \"user\" WHERE id = ?");   // 2
+            statement.setInt(1, userId);
+            resultSet = statement.executeQuery();
+
             if (resultSet.next()) {// next() : 결과값 있냐
                 return new User(
                     resultSet.getInt("id"),
@@ -61,14 +58,13 @@ public class UserJdbcApiDao {
 
     public List<User> findAll() throws SQLException {
         Connection connection = null;   // 1
-        Statement statement = null;     // 2
+        PreparedStatement statement = null;     // 2
         ResultSet resultSet = null;     // 3
         try {
-            connection = dataSource.getConnection();    // 1
-            statement = connection.createStatement();   // 2
-            resultSet = statement.executeQuery(         // 3
-                "SELECT * FROM \"user\""
-            );
+            connection = dataSource.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM \"user\"");
+            resultSet = statement.executeQuery();
+
             List<User> results = new ArrayList();
             while (resultSet.next()) {
                 results.add(
