@@ -10,21 +10,30 @@ import java.util.List;
 import org.springframework.web.server.ResponseStatusException;
 import java.sql.SQLException;
 
+
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final UserJdbcApiDao userJdbcRepository;
+    private final UserJdbcTemplateDao userJdbcTemplateRepository;
 
     public UserResponseDto findById(Integer id) {
 //        User user = userRepository.findById(id);
 //        return UserResponseDto.from(user);
-        try {
-            User user = userJdbcRepository.findById(id);
-            return UserResponseDto.from(user);
-        } catch (SQLException e) {// close도 SQLException로 발생, checked Exception로 처리, ResponseStatusException로
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "자원 반납 시 문제가 있습니다.");
-        }
+
+//        try {
+//            User user = userJdbcRepository.findById(id);
+//            return UserResponseDto.from(user);
+//        } catch (SQLException e) {// close도 SQLException로 발생, checked Exception로 처리, ResponseStatusException로
+//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "자원 반납 시 문제가 있습니다.");
+//        }
+//    }
+
+        //JDBC Template 적용한 단일 조회
+        User user = userJdbcTemplateRepository.findById(id);
+        return UserResponseDto.from(user);
     }
 
     public List<UserResponseDto> findAll() {
