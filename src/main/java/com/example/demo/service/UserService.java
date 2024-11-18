@@ -63,11 +63,15 @@ public class UserService {
 //        User user = userRepository.save(new User(null, name, age, job, specialty, LocalDateTime.now()));
 //        return UserResponseDto.from(user);
 
-        try {
-            User user = userJdbcRepository.save(name, age, job, specialty);
-            return UserResponseDto.from(user);
-        } catch (SQLException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "자원 반납 시 문제가 있습니다.");
-        }
+//        try {
+//            User user = userJdbcRepository.save(name, age, job, specialty);
+//            return UserResponseDto.from(user);
+//        } catch (SQLException e) {
+//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "자원 반납 시 문제가 있습니다.");
+//        }
+
+        // JDBC Template를 적용해 단일 insert
+        User user = userJdbcTemplateRepository.save(name, age, job, specialty);
+        return UserResponseDto.from(user);
     }
 }
