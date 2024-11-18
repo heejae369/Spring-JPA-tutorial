@@ -74,4 +74,10 @@ public class UserService {
         User user = userJdbcTemplateRepository.save(name, age, job, specialty);
         return UserResponseDto.from(user);
     }
+
+    //JDBC Template 적용한 update, JDBC Template에서 처음 생성
+    public UserResponseDto update(Integer id, String name, Integer age, String job, String specialty) {
+        User user = userJdbcTemplateRepository.update(id, name, age, job, specialty);
+        return UserResponseDto.from(user);
+    }
 }
