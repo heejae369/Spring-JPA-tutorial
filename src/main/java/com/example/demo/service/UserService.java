@@ -43,14 +43,20 @@ public class UserService {
 //                .toList();
 
         // ? : param
-        try {
-            return userJdbcRepository.findAll()
-                .stream()
-                .map(UserResponseDto::from)
-                .toList();
-        } catch (SQLException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "자원 반납 시 문제가 있습니다.");
-        }
+//        try {
+//            return userJdbcRepository.findAll()
+//                .stream()
+//                .map(UserResponseDto::from)
+//                .toList();
+//        } catch (SQLException e) {
+//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "자원 반납 시 문제가 있습니다.");
+//        }
+
+        // JDBC Template 적용한 전체 조회
+        return userJdbcTemplateRepository.findAll()
+            .stream()
+            .map(UserResponseDto::from)
+            .toList();
     }
 
     public UserResponseDto save(String name, Integer age, String job, String specialty) {
